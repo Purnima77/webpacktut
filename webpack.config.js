@@ -20,9 +20,8 @@ module.exports = {
     // Depending on mode Webpack will apply different things
     // on final bundle. For now we don't need production's JavaScript
     // minifying and other thing so let's set mode to development
-    mode: 'development'
-};
-module.rules = {
+    mode: 'development',
+
     module: {
         rules: [
             {
@@ -35,10 +34,25 @@ module.rules = {
                     }
                 }
             },
+            {
+                // Now we apply rule for images
+                test: /\.(png|jpeg|gif|svg)$/,
+                use: [
+                    {
+                        // Using file-loader for these files
+                        loader: "file-loader",
+
+                        // In options we can set different things like format
+                        // and directory to save
+                        options: {
+                            outputPath: 'images'
+                        }
+                    }
+                ]
+            },
             /*{
                 // Apply rule for .sass, .scss or .css files
                 test: /\.(css|sass|scss)$/,
-
                 // Set loaders to transform files.
                 // Loaders are applying from right to left(!)
                 // The first loader will be applied after others
@@ -67,31 +81,12 @@ module.rules = {
                 ]
             },*/
 
-                {
-                    // Now we apply rule for images
-                    test: /\.(png|jpeg|gif|svg)$/,
-                    use: [
-                        {
-                            // Using file-loader for these files
-                            loader: "file-loader",
-
-                            // In options we can set different things like format
-                            // and directory to save
-                            options: {
-                                outputPath: 'images'
-                            }
-                        }
-                    ]
-                }
-
         ]
-
     },
     plugins: [
-
         new MiniCssExtractPlugin({
             filename: "bundle.css"
         })
-
     ]
-}
+
+};
